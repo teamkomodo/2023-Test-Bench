@@ -19,7 +19,6 @@ public class ExampleSubsystem extends SubsystemBase {
   public void setMotor(double percent) {
     motor.set(percent);
   }
-}
   /**
    * Example command factory method.
    *
