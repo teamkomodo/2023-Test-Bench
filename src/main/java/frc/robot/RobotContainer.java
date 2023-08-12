@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -13,6 +14,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import static frc.robot.Constants.OperatorConstants.*;
+
+
+@SuppressWarnings("unused")
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -44,16 +49,22 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    Trigger aButton = m_driverController.a();
-    aButton.whileTrue(Commands.runEnd(() -> {
-      m_exampleSubsystem.setMotor(0.1);
-    }, () -> {
-      m_exampleSubsystem.setMotor(0);
-    }, m_exampleSubsystem));
+    
+    // A Button to spin
+    // Trigger aButton = m_driverController.a();
+    // aButton.whileTrue(Commands.runEnd(() -> {
+    //   m_exampleSubsystem.setMotor(.5);
+    // }, () -> {
+    //   m_exampleSubsystem.setMotor(0);
+    // }, m_exampleSubsystem));
 
+    //Right Joystick to move
+    Trigger rightJoystickY = m_driverController
+                .axisGreaterThan(XboxController.Axis.kRightY.value, XBOX_JOYSTICK_THRESHOLD)
+                .or(m_driverController.axisLessThan(XboxController.Axis.kRightY.value, -XBOX_JOYSTICK_THRESHOLD));
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
