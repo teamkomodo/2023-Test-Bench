@@ -50,18 +50,26 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
-    // A Button to spin
-    // Trigger aButton = m_driverController.a();
-    // aButton.whileTrue(Commands.runEnd(() -> {
-    //   m_exampleSubsystem.setMotor(.5);
-    // }, () -> {
-    //   m_exampleSubsystem.setMotor(0);
-    // }, m_exampleSubsystem));
+    // A Button to spin true/false
+    Trigger aButton = m_driverController.a();
+    aButton.whileTrue(Commands.runEnd(() -> {
+      m_exampleSubsystem.setMotor(.5);
+    }, () -> {
+      m_exampleSubsystem.setMotor(0);
+    }, m_exampleSubsystem));
 
-    //Right Joystick to move
+    //Right Joystick to control speed
     Trigger rightJoystickY = m_driverController
-                .axisGreaterThan(XboxController.Axis.kRightY.value, XBOX_JOYSTICK_THRESHOLD)
-                .or(m_driverController.axisLessThan(XboxController.Axis.kRightY.value, -XBOX_JOYSTICK_THRESHOLD));
+            .axisGreaterThan(XboxController.Axis.kRightY.value, XBOX_JOYSTICK_THRESHOLD)
+            .or(m_driverController.axisLessThan(XboxController.Axis.kRightY.value, -XBOX_JOYSTICK_THRESHOLD));
+    rightJoystickY.whileTrue(Commands.runEnd(() -> {
+      m_exampleSubsystem.setMotor(-m_driverController.getRightY());
+    }, () -> {
+      m_exampleSubsystem.setMotor(0);
+    }, m_exampleSubsystem));
+    
+    
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
